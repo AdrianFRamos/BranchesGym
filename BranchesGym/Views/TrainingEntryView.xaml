@@ -1,0 +1,50 @@
+﻿<Window x:Class="BranchesGym.Views.TrainingEntryView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Lançamento de Treino" Height="400" Width="400">
+    <Grid>
+        <StackPanel Margin="20">
+            <!-- Carga -->
+            <TextBox x:Name="LoadTextBox"
+                     Text="Carga (kg)"
+                     Foreground="Gray"
+                     GotFocus="LoadTextBox_GotFocus"
+                     LostFocus="LoadTextBox_LostFocus"
+                     Margin="0,0,0,10" />
+
+            <!-- Repetições -->
+            <TextBox x:Name="RepetitionsTextBox"
+                     Text="Repetições"
+                     Foreground="Gray"
+                     GotFocus="RepetitionsTextBox_GotFocus"
+                     LostFocus="RepetitionsTextBox_LostFocus"
+                     Margin="0,0,0,10" />
+
+            <!-- Método -->
+            <TextBox x:Name="MethodTextBox"
+                     Text="Método"
+                     Foreground="Gray"
+                     GotFocus="MethodTextBox_GotFocus"
+                     LostFocus="MethodTextBox_LostFocus"
+                     Margin="0,0,0,10" />
+
+            <!-- Tempo de Execução -->
+            <TextBox x:Name="ExecutionTimeTextBox"
+                     Text="Tempo de Execução (s)"
+                     Foreground="Gray"
+                     GotFocus="ExecutionTimeTextBox_GotFocus"
+                     LostFocus="ExecutionTimeTextBox_LostFocus"
+                     Margin="0,0,0,10" />
+
+            <!-- Descanso -->
+            <TextBox x:Name="RestTimeTextBox"
+                     Text="Descanso (s)"
+                     Foreground="Gray"
+                     GotFocus="RestTimeTextBox_GotFocus"
+                     LostFocus="RestTimeTextBox_LostFocus"
+                     Margin="0,0,0,10" />
+
+            <Button Content="Salvar Treino" Click="SaveTrainingButton_Click" Margin="0,10,0,0" Height="40" />
+        </StackPanel>
+    </Grid>
+</Window>

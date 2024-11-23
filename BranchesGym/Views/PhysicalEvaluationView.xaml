@@ -1,0 +1,34 @@
+﻿<Window x:Class="BranchesGym.Views.PhysicalEvaluationView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Avaliação Física" Height="400" Width="400">
+    <Grid>
+        <StackPanel Margin="20">
+            <!-- Peso -->
+            <TextBox x:Name="WeightTextBox"
+                     Text="Peso (kg)"
+                     Foreground="Gray"
+                     GotFocus="WeightTextBox_GotFocus"
+                     LostFocus="WeightTextBox_LostFocus"
+                     Margin="0,0,0,10" />
+
+            <!-- Altura -->
+            <TextBox x:Name="HeightTextBox"
+                     Text="Altura (cm)"
+                     Foreground="Gray"
+                     GotFocus="HeightTextBox_GotFocus"
+                     LostFocus="HeightTextBox_LostFocus"
+                     Margin="0,0,0,10" />
+
+            <!-- Gordura Corporal -->
+            <TextBox x:Name="BodyFatTextBox"
+                     Text="Gordura Corporal (%)"
+                     Foreground="Gray"
+                     GotFocus="BodyFatTextBox_GotFocus"
+                     LostFocus="BodyFatTextBox_LostFocus"
+                     Margin="0,0,0,10" />
+
+            <Button Content="Salvar Avaliação" Click="SaveEvaluationButton_Click" Margin="0,10,0,0" Height="40" />
+        </StackPanel>
+    </Grid>
+</Window>

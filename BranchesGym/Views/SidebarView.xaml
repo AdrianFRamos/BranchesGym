@@ -1,0 +1,12 @@
+﻿<UserControl x:Class="BranchesGym.Views.SidebarView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <StackPanel Background="LightGray" Width="200">
+        <Button Content="Editar Perfil" Height="40" Margin="5" Click="NavigateToProfile_Click" />
+        <Button Content="Cadastrar Exercícios" Height="40" Margin="5" Click="NavigateToExerciseRegistration_Click" />
+        <Button Content="Treinos" Height="40" Margin="5" Click="NavigateToTraining_Click" />
+        <Button Content="Avaliações Físicas" Height="40" Margin="5" Click="NavigateToPhysicalEvaluation_Click" />
+        <Button Content="Nutrição" Height="40" Margin="5" Click="NavigateToNutrition_Click" />
+        <Button Content="Ciclo de EAS" Height="40" Margin="5" Click="NavigateToEAS_Click" />
+    </StackPanel>
+</UserControl>

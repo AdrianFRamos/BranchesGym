@@ -1,0 +1,26 @@
+﻿<Window x:Class="BranchesGym.Views.ExerciseRegistrationView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Cadastro de Exercícios" Height="400" Width="400">
+    <Grid>
+        <StackPanel Margin="20">
+            <!-- Nome do Exercício -->
+            <TextBox x:Name="ExerciseNameTextBox"
+                     Text="Nome do Exercício"
+                     Foreground="Gray"
+                     GotFocus="ExerciseNameTextBox_GotFocus"
+                     LostFocus="ExerciseNameTextBox_LostFocus"
+                     Margin="0,0,0,10" />
+
+            <!-- Grupo Muscular -->
+            <TextBox x:Name="MuscleGroupTextBox"
+                     Text="Grupo Muscular"
+                     Foreground="Gray"
+                     GotFocus="MuscleGroupTextBox_GotFocus"
+                     LostFocus="MuscleGroupTextBox_LostFocus"
+                     Margin="0,0,0,10" />
+
+            <Button Content="Cadastrar Exercício" Click="RegisterExerciseButton_Click" Margin="0,10,0,0" Height="40" />
+        </StackPanel>
+    </Grid>
+</Window>

@@ -1,0 +1,27 @@
+﻿<Window x:Class="BranchesGym.Views.LoginView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Login" Height="300" Width="400">
+    <Grid>
+        <StackPanel Margin="20">
+            <!-- Campo de Usuário -->
+            <TextBox x:Name="UsernameTextBox"
+                     Text="Usuário"
+                     Foreground="Gray"
+                     GotFocus="UsernameTextBox_GotFocus"
+                     LostFocus="UsernameTextBox_LostFocus"
+                     Margin="0,0,0,10" />
+
+            <!-- Campo de Senha -->
+            <PasswordBox x:Name="PasswordBox"
+                         Tag="Senha"
+                         GotFocus="PasswordBox_GotFocus"
+                         LostFocus="PasswordBox_LostFocus"
+                         Margin="0,0,0,10" />
+
+            <!-- Botões -->
+            <Button Content="Login" Click="LoginButton_Click" Margin="0,10,0,0" Height="40" />
+            <Button Content="Cadastrar-se" Click="RegisterButton_Click" Margin="0,10,0,0" Height="40" />
+        </StackPanel>
+    </Grid>
+</Window>

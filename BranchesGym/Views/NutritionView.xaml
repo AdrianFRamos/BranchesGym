@@ -1,0 +1,34 @@
+﻿<Window x:Class="BranchesGym.Views.NutritionView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Informações Nutricionais" Height="400" Width="400">
+    <Grid>
+        <StackPanel Margin="20">
+            <!-- Tipo de Refeição -->
+            <TextBox x:Name="MealTypeTextBox"
+                     Text="Tipo de Refeição"
+                     Foreground="Gray"
+                     GotFocus="MealTypeTextBox_GotFocus"
+                     LostFocus="MealTypeTextBox_LostFocus"
+                     Margin="0,0,0,10" />
+
+            <!-- Alimento -->
+            <TextBox x:Name="FoodTextBox"
+                     Text="Alimento"
+                     Foreground="Gray"
+                     GotFocus="FoodTextBox_GotFocus"
+                     LostFocus="FoodTextBox_LostFocus"
+                     Margin="0,0,0,10" />
+
+            <!-- Calorias -->
+            <TextBox x:Name="CaloriesTextBox"
+                     Text="Calorias"
+                     Foreground="Gray"
+                     GotFocus="CaloriesTextBox_GotFocus"
+                     LostFocus="CaloriesTextBox_LostFocus"
+                     Margin="0,0,0,10" />
+
+            <Button Content="Salvar Refeição" Click="SaveNutritionButton_Click" Margin="0,10,0,0" Height="40" />
+        </StackPanel>
+    </Grid>
+</Window>
