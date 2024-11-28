@@ -1,27 +1,104 @@
 ﻿<Window x:Class="BranchesGym.Views.LoginView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Login" Height="300" Width="400">
+        Title="Login - BranchesGym"
+        Height="500"
+        Width="800"
+        Background="#1E1E2F"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None"
+        ResizeMode="NoResize">
     <Grid>
-        <StackPanel Margin="20">
-            <!-- Campo de Usuário -->
-            <TextBox x:Name="UsernameTextBox"
-                     Text="Usuário"
-                     Foreground="Gray"
-                     GotFocus="UsernameTextBox_GotFocus"
-                     LostFocus="UsernameTextBox_LostFocus"
-                     Margin="0,0,0,10" />
+        <!-- Definição das linhas -->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40" />
+            <!-- Linha para botões de controle -->
+            <RowDefinition Height="*" />
+            <!-- Linha para o conteúdo principal -->
+        </Grid.RowDefinitions>
 
-            <!-- Campo de Senha -->
-            <PasswordBox x:Name="PasswordBox"
-                         Tag="Senha"
-                         GotFocus="PasswordBox_GotFocus"
-                         LostFocus="PasswordBox_LostFocus"
-                         Margin="0,0,0,10" />
-
-            <!-- Botões -->
-            <Button Content="Login" Click="LoginButton_Click" Margin="0,10,0,0" Height="40" />
-            <Button Content="Cadastrar-se" Click="RegisterButton_Click" Margin="0,10,0,0" Height="40" />
+        <!-- Botões de Controle -->
+        <StackPanel Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="10,0,10,0">
+            <Button Content="_"
+                    Width="40"
+                    Height="30"
+                    FontSize="16"
+                    FontWeight="Bold"
+                    Background="#1E1E2F"
+                    Foreground="White"
+                    BorderBrush="Transparent"
+                    Click="MinimizeWindow"
+                    ToolTip="Minimizar" />
+            <Button Content="X"
+                    Width="40"
+                    Height="30"
+                    FontSize="16"
+                    FontWeight="Bold"
+                    Background="#1E1E2F"
+                    Foreground="White"
+                    BorderBrush="Transparent"
+                    Click="CloseWindow"
+                    ToolTip="Fechar" />
         </StackPanel>
+
+        <!-- Conteúdo principal -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="2*" />
+            </Grid.ColumnDefinitions>
+
+            <!-- Lado esquerdo: Logo e slogan -->
+            <StackPanel Grid.Column="0" Background="#1E1E2F" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <TextBlock Text="Branches Gym" FontSize="36" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center" />
+                <TextBlock Text="Rapido e Produtivo" FontSize="16" Foreground="#BBBBBB" HorizontalAlignment="Center" Margin="0,10,0,0" />
+            </StackPanel>
+
+            <!-- Lado direito: Formulário -->
+            <StackPanel Grid.Column="1" Background="#252531" Margin="40" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <TextBlock Text="🔑 Login" FontSize="24" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center" Margin="0,0,0,20" />
+
+                <!-- Campo de Email -->
+                <TextBox x:Name="EmailTextBox"
+                         Text="Email"
+                         Foreground="Gray"
+                         Background="#333348"
+                         BorderBrush="Transparent"
+                         Margin="0,10,0,10"
+                         Padding="10"
+                         Height="40"
+                         GotFocus="TextBox_GotFocus"
+                         LostFocus="TextBox_LostFocus" />
+
+                <!-- Campo de Senha -->
+                <PasswordBox x:Name="PasswordBox"
+                             Tag="Senha"
+                             Foreground="Gray"
+                             Background="#333348"
+                             BorderBrush="Transparent"
+                             Margin="0,10,0,10"
+                             Padding="10"
+                             Height="40"
+                             GotFocus="PasswordBox_GotFocus"
+                             LostFocus="PasswordBox_LostFocus" />
+
+                <!-- Opções: Lembrar e Esqueceu a senha -->
+                <StackPanel Orientation="Horizontal" Margin="0,10,0,10" HorizontalAlignment="Stretch">
+                    <CheckBox Content="Lembrar" Foreground="White" Background="Transparent" />
+                    <TextBlock Text="Esqueceu a senha?" Foreground="#3D9DF7" HorizontalAlignment="Right" Cursor="Hand" />
+                </StackPanel>
+
+                <!-- Botão Login -->
+                <Button Content="Login"
+                        Background="#3D9DF7"
+                        Foreground="White"
+                        FontSize="16"
+                        FontWeight="Bold"
+                        Height="40"
+                        BorderBrush="Transparent"
+                        Margin="0,20,0,0"
+                        Click="LoginButton_Click" />
+            </StackPanel>
+        </Grid>
     </Grid>
 </Window>

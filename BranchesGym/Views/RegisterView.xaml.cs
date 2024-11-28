@@ -12,6 +12,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
+using System.Windows;
+using BranchesGym.Data;
+using BranchesGym.Models;
+
 namespace BranchesGym.Views
 {
     public partial class RegisterView : Window
@@ -21,77 +25,98 @@ namespace BranchesGym.Views
             InitializeComponent();
         }
 
-        // Placeholder para TextBox de Usuário
-        private void UsernameTextBox_GotFocus(object sender, RoutedEventArgs e)
+        private void TextBox_GotFocus(object sender, RoutedEventArgs e)
         {
-            if (UsernameTextBox.Text == "Usuário")
+            var textBox = sender as System.Windows.Controls.TextBox;
+            if (textBox.Text == textBox.Tag?.ToString())
             {
-                UsernameTextBox.Text = "";
-                UsernameTextBox.Foreground = Brushes.Black;
+                textBox.Text = "";
+                textBox.Foreground = System.Windows.Media.Brushes.Black;
             }
         }
 
-        private void UsernameTextBox_LostFocus(object sender, RoutedEventArgs e)
+        private void TextBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(UsernameTextBox.Text))
+            var textBox = sender as System.Windows.Controls.TextBox;
+            if (string.IsNullOrWhiteSpace(textBox.Text))
             {
-                UsernameTextBox.Text = "Usuário";
-                UsernameTextBox.Foreground = Brushes.Gray;
+                textBox.Text = textBox.Tag?.ToString();
+                textBox.Foreground = System.Windows.Media.Brushes.Gray;
             }
         }
 
-        // Placeholder para TextBox de Email
-        private void EmailTextBox_GotFocus(object sender, RoutedEventArgs e)
-        {
-            if (EmailTextBox.Text == "Email")
-            {
-                EmailTextBox.Text = "";
-                EmailTextBox.Foreground = Brushes.Black;
-            }
-        }
-
-        private void EmailTextBox_LostFocus(object sender, RoutedEventArgs e)
-        {
-            if (string.IsNullOrWhiteSpace(EmailTextBox.Text))
-            {
-                EmailTextBox.Text = "Email";
-                EmailTextBox.Foreground = Brushes.Gray;
-            }
-        }
-
-        // Placeholder para PasswordBox de Senha
         private void PasswordBox_GotFocus(object sender, RoutedEventArgs e)
         {
-            if (PasswordBox.Tag.ToString() == "Senha" && PasswordBox.Password == "")
+            var passwordBox = sender as System.Windows.Controls.PasswordBox;
+            if (passwordBox.Tag.ToString() == "Senha" && passwordBox.Password == "")
             {
-                PasswordBox.Foreground = Brushes.Black;
-                PasswordBox.Tag = ""; // Remove o placeholder
+                passwordBox.Tag = ""; // Remove o placeholder
+                passwordBox.Foreground = System.Windows.Media.Brushes.Black;
             }
         }
 
         private void PasswordBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (PasswordBox.Password == "")
+            var passwordBox = sender as System.Windows.Controls.PasswordBox;
+            if (passwordBox.Password == "")
             {
-                PasswordBox.Foreground = Brushes.Gray;
-                PasswordBox.Tag = "Senha"; // Restaura o placeholder
+                passwordBox.Tag = "Senha"; // Adiciona o placeholder novamente
+                passwordBox.Foreground = System.Windows.Media.Brushes.Gray;
             }
         }
 
         private void RegisterButton_Click(object sender, RoutedEventArgs e)
         {
-            string username = UsernameTextBox.Text;
-            string email = EmailTextBox.Text;
-            string password = PasswordBox.Password;
+            string firstName = FirstNameTextBox.Text.Trim();
+            string lastName = LastNameTextBox.Text.Trim();
+            string phoneNumber = PhoneNumberTextBox.Text.Trim();
+            string email = EmailTextBox.Text.Trim();
+            string password = PasswordBox.Password.Trim();
+            string confirmPassword = ConfirmPasswordBox.Password.Trim();
 
-            if (username == "Usuário" || email == "Email" || password == "")
+            // Validação dos campos
+            if (string.IsNullOrWhiteSpace(firstName) || string.IsNullOrWhiteSpace(lastName) ||
+                string.IsNullOrWhiteSpace(phoneNumber) || string.IsNullOrWhiteSpace(email) ||
+                string.IsNullOrWhiteSpace(password) || string.IsNullOrWhiteSpace(confirmPassword))
             {
-                MessageBox.Show("Preencha todos os campos!");
+                MessageBox.Show("Todos os campos devem ser preenchidos.");
                 return;
             }
 
-            MessageBox.Show($"Usuário {username} cadastrado com sucesso!");
+            if (password != confirmPassword)
+            {
+                MessageBox.Show("As senhas não correspondem.");
+                return;
+            }
+
+            // Gerar username automaticamente
+            string username = $"{firstName.ToLower()}.{lastName.ToLower()}";
+
+            // Salvar no banco de dados
+            using (var context = new DatabaseContext())
+            {
+                if (context.Users.Any(u => u.Email == email))
+                {
+                    MessageBox.Show("Já existe um usuário com este email.");
+                    return;
+                }
+
+                var newUser = new User
+                {
+                    Nome = username,
+                    Senha = password,
+                    Email = email,
+                    Numero = phoneNumber,
+                    TipoUsuario = "CoTreinador" // ou outro tipo, conforme necessário
+                };
+
+                context.Users.Add(newUser);
+                context.SaveChanges();
+            }
+
+            MessageBox.Show("Usuário cadastrado com sucesso!");
             this.Close();
         }
     }
 }
+

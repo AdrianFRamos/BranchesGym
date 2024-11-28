@@ -68,7 +68,7 @@ namespace BranchesGym.Views {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/BranchesGym;V1.0.0.0;component/views/exerciseregistrationview.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/BranchesGym;component/views/exerciseregistrationview.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\Views\ExerciseRegistrationView.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);
