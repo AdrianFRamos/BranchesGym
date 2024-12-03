@@ -1,40 +1,41 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using System.Windows;
+﻿using System.Windows;
+using BranchesGym.Views;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace BranchesGym.Services
 {
     public class WindowService
     {
-        // Método para minimizar a janela
+        private readonly IServiceProvider _serviceProvider;
+
+        public WindowService(IServiceProvider serviceProvider)
+        {
+            _serviceProvider = serviceProvider;
+        }
         public void Minimize(Window window)
         {
             if (window != null)
-                window.WindowState = WindowState.Minimized;
-        }
-
-        // Método para maximizar ou restaurar a janela
-        public void ToggleMaximize(Window window)
-        {
-            if (window != null)
             {
-                if (window.WindowState == WindowState.Maximized)
-                    window.WindowState = WindowState.Normal;
-                else
-                    window.WindowState = WindowState.Maximized;
+                window.WindowState = WindowState.Minimized;
             }
         }
 
-        // Método para fechar a janela
         public void Close(Window window)
         {
-            if (window != null)
-                window.Close();
+            window?.Close();
+        }
+
+        public void OpenDashboard()
+        {
+            // Abre a janela do Dashboard
+            var dashboard = new DashboardView();
+            dashboard.Show();
+        }
+
+        public void OpenRegisterView()
+        {
+            var registerView = _serviceProvider.GetRequiredService<RegisterView>();
+            registerView.Show();
         }
     }
 }
-

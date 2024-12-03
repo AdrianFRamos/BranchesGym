@@ -42,5 +42,33 @@ namespace BranchesGym.Services
 
             return user; // Retorna o usuário autenticado
         }
+
+        public void EnviarEmailRedefinicaoSenha(string emailDestino)
+        {
+            var fromAddress = new System.Net.Mail.MailAddress("seuemail@exemplo.com", "Branches Gym");
+            var toAddress = new System.Net.Mail.MailAddress(emailDestino);
+            const string fromPassword = "senha-do-email";
+            const string subject = "Redefinição de Senha";
+            const string body = "Clique no link abaixo para redefinir sua senha:\n\nhttps://seu-site.com/redefinir-senha";
+
+            var smtp = new System.Net.Mail.SmtpClient
+            {
+                Host = "smtp.seuprovedor.com",
+                Port = 587,
+                EnableSsl = true,
+                DeliveryMethod = System.Net.Mail.SmtpDeliveryMethod.Network,
+                UseDefaultCredentials = false,
+                Credentials = new System.Net.NetworkCredential(fromAddress.Address, fromPassword)
+            };
+
+            using (var message = new System.Net.Mail.MailMessage(fromAddress, toAddress)
+            {
+                Subject = subject,
+                Body = body
+            })
+            {
+                smtp.Send(message);
+            }
+        }
     }
 }

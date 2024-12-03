@@ -1,88 +1,62 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System;
-using System.ComponentModel;
+using System.Windows;
+using System.Windows.Input;
+using GalaSoft.MvvmLight.Command;
 using BranchesGym.Services;
-using BranchesGym.Models;
 
 namespace BranchesGym.ViewModels
 {
-    public class RegisterViewModel : INotifyPropertyChanged
+    public class RegisterViewModel
     {
-        private string _username;
-        private string _password;
-        private string _email;
-        private string _tipoUsuario;
         private readonly AuthService _authService;
+        private readonly WindowService _windowService;
 
-        public string Username
+        public string Nome { get; set; }
+        public string Sobrenome { get; set; }
+        public string Email { get; set; }
+        public string Senha { get; set; }
+
+        public ICommand MinimizeCommand { get; }
+        public ICommand CloseCommand { get; }
+        public ICommand RegisterCommand { get; }
+
+        public RegisterViewModel(AuthService authService, WindowService windowService)
         {
-            get => _username;
-            set { _username = value; OnPropertyChanged(nameof(Username)); }
+            _authService = authService ?? throw new ArgumentNullException(nameof(authService));
+            _windowService = windowService ?? throw new ArgumentNullException(nameof(windowService));
+
+            MinimizeCommand = new RelayCommand(() => _windowService.Minimize(Application.Current.MainWindow));
+            CloseCommand = new RelayCommand(() => _windowService.Close(Application.Current.MainWindow));
+            RegisterCommand = new RelayCommand(ExecuteRegisterCommand);
         }
 
-        public string Password
+        private void ExecuteRegisterCommand()
         {
-            get => _password;
-            set { _password = value; OnPropertyChanged(nameof(Password)); }
-        }
-
-        public string Email
-        {
-            get => _email;
-            set { _email = value; OnPropertyChanged(nameof(Email)); }
-        }
-
-        public string TipoUsuario
-        {
-            get => _tipoUsuario;
-            set { _tipoUsuario = value; OnPropertyChanged(nameof(TipoUsuario)); }
-        }
-
-        public RegisterViewModel(AuthService authService)
-        {
-            _authService = authService;
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        public void Register()
-        {
-            if (string.IsNullOrWhiteSpace(Username))
-                throw new Exception("O nome de usuário é obrigatório.");
-
-            if (string.IsNullOrWhiteSpace(Password))
-                throw new Exception("A senha é obrigatória.");
-
-            if (string.IsNullOrWhiteSpace(Email))
-                throw new Exception("O email é obrigatório.");
-
-            if (!Email.Contains("@"))
-                throw new Exception("O email fornecido não é válido.");
-
-            if (string.IsNullOrWhiteSpace(TipoUsuario))
-                throw new Exception("O tipo de usuário é obrigatório.");
-
-            var user = new User
+            if (string.IsNullOrWhiteSpace(Nome) || string.IsNullOrWhiteSpace(Sobrenome) ||
+                string.IsNullOrWhiteSpace(Email) || string.IsNullOrWhiteSpace(Senha))
             {
-                Username = Username,
-                Senha = Password,
-                Email = Email,
-                TipoUsuario = TipoUsuario, // Define o tipo do usuário
-                Nome = "Nome Exemplo",
-                Sobrenome = "Sobrenome Exemplo"
-            };
+                MessageBox.Show("Por favor, preencha todos os campos.", "Erro", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
 
-            _authService.Register(user);
+            try
+            {
+                _authService.Register(new Models.User
+                {
+                    Nome = Nome,
+                    Sobrenome = Sobrenome,
+                    Email = Email,
+                    Senha = Senha,
+                    TipoUsuario = "Cliente"
+                });
+
+                MessageBox.Show("Cadastro realizado com sucesso!", "Sucesso", MessageBoxButton.OK, MessageBoxImage.Information);
+                _windowService.Close(Application.Current.MainWindow);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erro ao registrar usuário: {ex.Message}", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
     }
 }
-

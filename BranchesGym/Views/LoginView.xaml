@@ -1,13 +1,14 @@
 ﻿<Window x:Class="BranchesGym.Views.LoginView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Login - BranchesGym"
+        Title="Login - Branches Gym"
         Height="500"
         Width="800"
-        Background="#1E1E2F"
+        Background="Black"
         WindowStartupLocation="CenterScreen"
         WindowStyle="None"
         ResizeMode="NoResize">
+
     <Grid>
         <!-- Definição das linhas -->
         <Grid.RowDefinitions>
@@ -19,7 +20,7 @@
 
         <!-- Botões de Controle -->
         <StackPanel Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="10,0,10,0">
-            <Button Content="_"
+            <Button Content="-"
                     Width="40"
                     Height="30"
                     FontSize="16"
@@ -27,78 +28,83 @@
                     Background="#1E1E2F"
                     Foreground="White"
                     BorderBrush="Transparent"
-                    Click="MinimizeWindow"
+                    Command="{Binding MinimizeCommand}"
                     ToolTip="Minimizar" />
-            <Button Content="X"
+            <Button Content="x"
                     Width="40"
                     Height="30"
                     FontSize="16"
                     FontWeight="Bold"
-                    Background="#1E1E2F"
+                    Background="Black"
                     Foreground="White"
                     BorderBrush="Transparent"
-                    Click="CloseWindow"
+                    Command="{Binding CloseCommand}"
                     ToolTip="Fechar" />
         </StackPanel>
 
         <!-- Conteúdo principal -->
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="2*" />
+                <ColumnDefinition Width="9*" />
+                <ColumnDefinition Width="11*" />
             </Grid.ColumnDefinitions>
 
             <!-- Lado esquerdo: Logo e slogan -->
-            <StackPanel Grid.Column="0" Background="#1E1E2F" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <TextBlock Text="Branches Gym" FontSize="36" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center" />
-                <TextBlock Text="Rapido e Produtivo" FontSize="16" Foreground="#BBBBBB" HorizontalAlignment="Center" Margin="0,10,0,0" />
+            <StackPanel Background="Black" HorizontalAlignment="Center" VerticalAlignment="Top" Height="89" Width="240" Margin="0,254,0,0">
+                <TextBlock Text="Branches Gym" FontSize="36" FontWeight="Bold" Foreground="Yellow" HorizontalAlignment="Center" />
+                <TextBlock Text="Para o melhor Profissional" FontSize="16" Foreground="#BBBBBB" HorizontalAlignment="Center" Margin="0,10,0,0" />
             </StackPanel>
 
             <!-- Lado direito: Formulário -->
-            <StackPanel Grid.Column="1" Background="#252531" Margin="40" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <TextBlock Text="🔑 Login" FontSize="24" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center" Margin="0,0,0,20" />
+            <StackPanel Grid.Column="1" Background="Black" Margin="101,81,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="347" Width="282">
+                <TextBlock Text="🔑 Login" FontSize="24" FontWeight="Bold" Foreground="Yellow" HorizontalAlignment="Center" Margin="50,0,50,20" />
 
                 <!-- Campo de Email -->
-                <TextBox x:Name="EmailTextBox"
-                         Text="Email"
+                <TextBox Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}"
                          Foreground="Gray"
                          Background="#333348"
                          BorderBrush="Transparent"
                          Margin="0,10,0,10"
                          Padding="10"
-                         Height="40"
-                         GotFocus="TextBox_GotFocus"
-                         LostFocus="TextBox_LostFocus" />
+                         Height="40"/>
 
                 <!-- Campo de Senha -->
-                <PasswordBox x:Name="PasswordBox"
-                             Tag="Senha"
-                             Foreground="Gray"
-                             Background="#333348"
-                             BorderBrush="Transparent"
-                             Margin="0,10,0,10"
-                             Padding="10"
-                             Height="40"
-                             GotFocus="PasswordBox_GotFocus"
-                             LostFocus="PasswordBox_LostFocus" />
+                <PasswordBox PasswordChanged="PasswordBox_PasswordChanged"
+                     Margin="0,10,0,10"
+                     Padding="10"
+                     Height="40"
+                     Background="#333348"
+                     BorderBrush="Transparent" />
+
 
                 <!-- Opções: Lembrar e Esqueceu a senha -->
-                <StackPanel Orientation="Horizontal" Margin="0,10,0,10" HorizontalAlignment="Stretch">
+                <StackPanel Orientation="Horizontal" Margin="0,2,0,10" HorizontalAlignment="Right">
                     <CheckBox Content="Lembrar" Foreground="White" Background="Transparent" />
-                    <TextBlock Text="Esqueceu a senha?" Foreground="#3D9DF7" HorizontalAlignment="Right" Cursor="Hand" />
                 </StackPanel>
-
-                <!-- Botão Login -->
+                <TextBlock HorizontalAlignment="Center" Margin="0,10,0,10">
+                    <Hyperlink Command="{Binding EsqueciSenhaCommand}" Foreground="Yellow">
+                        Esqueceu a senha?
+                    </Hyperlink>
+                </TextBlock>
                 <Button Content="Login"
-                        Background="#3D9DF7"
-                        Foreground="White"
+                        Background="Yellow"
+                        Foreground="Black"
                         FontSize="16"
                         FontWeight="Bold"
                         Height="40"
                         BorderBrush="Transparent"
-                        Margin="0,20,0,0"
-                        Click="LoginButton_Click" />
+                        Command="{Binding LoginCommand}" />
+
+                <!-- Botão Login -->
             </StackPanel>
+            <Image HorizontalAlignment="Center" Height="216" Margin="0,61,0,0" VerticalAlignment="Top" Width="241" Source="/Resources/fisiculturistaHome.png"/>
         </Grid>
+        <Button Content="Cadastre-se"
+            Background="Yellow"
+            Foreground="Black"
+            FontSize="16"
+            FontWeight="Bold"
+            BorderBrush="Transparent"
+            Command="{Binding RegisterCommand}" Margin="78,343,519,77" Grid.Row="1" />
     </Grid>
 </Window>

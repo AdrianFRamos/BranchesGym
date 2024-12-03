@@ -1,77 +1,155 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Windows;
+using System.Windows.Input;
+using GalaSoft.MvvmLight.Command;
 using BranchesGym.Services;
 using System.ComponentModel;
-
-using System;
-using System.ComponentModel;
-using BranchesGym.Services;
-using BranchesGym.Models;
 
 namespace BranchesGym.ViewModels
 {
     public class LoginViewModel : INotifyPropertyChanged
     {
-        private string _username;
-        private string _password;
-        private string _tipoUsuario; // Novo campo para armazenar o tipo de usuário após o login
         private readonly AuthService _authService;
+        private readonly WindowService _windowService;
 
-        public string Username
+        private string _email;
+        private string _password;
+
+        public string Email
         {
-            get => _username;
-            set { _username = value; OnPropertyChanged(nameof(Username)); }
+            get => _email;
+            set
+            {
+                _email = value;
+                // Notificar mudanças para bindings (INotifyPropertyChanged recomendado)
+                OnPropertyChanged(nameof(Email));
+            }
         }
 
         public string Password
         {
             get => _password;
-            set { _password = value; OnPropertyChanged(nameof(Password)); }
+            set
+            {
+                _password = value;
+                // Notificar mudanças para bindings (INotifyPropertyChanged recomendado)
+                OnPropertyChanged(nameof(Password));
+            }
         }
 
-        public string TipoUsuario
+        public ICommand MinimizeCommand { get; }
+        public ICommand CloseCommand { get; }
+        public ICommand EsqueciSenhaCommand { get; }
+        public ICommand LoginCommand { get; }
+        public ICommand RegisterCommand { get; }
+
+        public LoginViewModel(AuthService authService, WindowService windowService)
         {
-            get => _tipoUsuario;
-            private set { _tipoUsuario = value; OnPropertyChanged(nameof(TipoUsuario)); }
+            _authService = authService ?? throw new ArgumentNullException(nameof(authService));
+            _windowService = windowService ?? throw new ArgumentNullException(nameof(windowService));
+
+            // Inicializar comandos
+            LoginCommand = new RelayCommand(ExecuteLoginCommand);
+            MinimizeCommand = new RelayCommand(() => _windowService.Minimize(Application.Current.MainWindow));
+            CloseCommand = new RelayCommand(() => _windowService.Close(Application.Current.MainWindow));
+            EsqueciSenhaCommand = new RelayCommand(ExecuteEsqueciSenhaCommand);
+            RegisterCommand = new RelayCommand(ExecuteRegisterCommand);
         }
 
-        public LoginViewModel(AuthService authService)
+        private void ExecuteLoginCommand()
         {
-            _authService = authService;
-        }
+            if (string.IsNullOrWhiteSpace(Email) || string.IsNullOrWhiteSpace(Password))
+            {
+                MessageBox.Show("Por favor, preencha todos os campos.", "Erro", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        public bool Login()
-        {
             try
             {
-                // Chama o AuthService para autenticar o usuário
-                var user = _authService.Login(Username, Password);
+                var user = _authService.Login(Email, Password);
 
-                if (user != null)
+                if (user == null)
                 {
-                    // Armazena o tipo de usuário após o login bem-sucedido
-                    TipoUsuario = user.TipoUsuario;
-                    return true;
+                    MessageBox.Show("Email ou senha inválidos.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
                 }
+
+                MessageBox.Show($"Bem-vindo, {user.Nome}!", "Sucesso", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                _windowService.OpenDashboard();
+                Application.Current.MainWindow.Close();
             }
             catch (Exception ex)
             {
-                // Log de erros ou tratamento de exceções
-                Console.WriteLine($"Erro no login: {ex.Message}");
+                MessageBox.Show($"Erro ao realizar login: {ex.Message}", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void ExecuteRegisterCommand()
+        {
+            // Chama o serviço para abrir a tela de registro
+            _windowService.OpenRegisterView();
+
+            // Opcional: Fechar a tela de login
+            Application.Current.MainWindow.Close();
+        }
+
+        private void ExecuteEsqueciSenhaCommand()
+        {
+            // Abre uma janela para o usuário inserir o e-mail
+            string email = PromptForEmail();
+
+            // Valida se o e-mail foi inserido
+            if (string.IsNullOrWhiteSpace(email))
+            {
+                MessageBox.Show("Por favor, insira um e-mail válido.", "Erro", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
             }
 
-            return false; // Login falhou
+            // Valida o formato do e-mail
+            if (!IsValidEmail(email))
+            {
+                MessageBox.Show("Formato de e-mail inválido.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            try
+            {
+                // Chama o serviço de envio de e-mail
+                _authService.EnviarEmailRedefinicaoSenha(email);
+
+                MessageBox.Show("Um e-mail foi enviado com as instruções para redefinição de senha.", "Sucesso", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erro ao enviar o e-mail: {ex.Message}", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+        private string PromptForEmail()
+        {
+            return Microsoft.VisualBasic.Interaction.InputBox(
+                "Digite seu e-mail para redefinir a senha:",
+                "Esqueci minha senha",
+                string.Empty
+            );
+        }
+
+        private bool IsValidEmail(string email)
+        {
+            try
+            {
+                var addr = new System.Net.Mail.MailAddress(email);
+                return addr.Address == email;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        protected void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
         }
     }
 }
-
